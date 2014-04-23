@@ -230,9 +230,9 @@ class JMinusAssignOp extends JAssignment {
         if (lhs.type().equals(Type.INT)) {
             rhs.type().mustMatchExpected(line(), Type.INT);
             type = Type.INT;
-        } else if (lhs.type().equals(Type.STRING)) {
-            rhs = (new JStringConcatenationOp(line, lhs, rhs)).analyze(context);
-            type = Type.STRING;
+        } else if (lhs.type().equals(Type.DOUBLE)) {
+            rhs.type().equals(Type.DOUBLE);
+            type = Type.DOUBLE;
         } else {
             JAST.compilationUnit.reportSemanticError(line(),
                     "Invalid lhs type for -=: " + lhs.type());
@@ -252,7 +252,21 @@ class JMinusAssignOp extends JAssignment {
      */
 
     public void codegen(CLEmitter output) {
-    
+        ((JLhs) lhs).codegenLoadLhsLvalue(output);
+    if (lhs.type().equals(Type.INT)) {
+            ((JLhs) lhs).codegenLoadLhsRvalue(output);
+            rhs.codegen(output);
+            output.addNoArgInstruction(ISUB);
+    } else if (lhs.type().equals(Type.DOUBLE)){
+            ((JLhs) lhs).codegenLoadLhsRvalue(output);
+            rhs.codegen(output);
+            output.addNoArgInstruction(DSUB);
+      }
+      if (!isStatementExpression) {
+            // Generate code to leave the r-value atop stack
+            ((JLhs) lhs).codegenDuplicateRvalue(output);
+      }
+       ((JLhs) lhs).codegenStore(output);
     }
 
 }

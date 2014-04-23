@@ -32,12 +32,12 @@ class Type {
 
     /** The primitive type, int. */
     public final static Type INT = typeFor(int.class);
-    
-    /** The primitive type, double. */
-    public final static Type DOUBLE = typeFor(double.class);
 
     /** The primitive type, char. */
     public final static Type CHAR = typeFor(char.class);
+
+    /** The primitive type, double. */
+    public final static Type DOUBLE = typeFor(double.class);
 
     /** The primitive type, boolean. */
     public final static Type BOOLEAN = typeFor(boolean.class);
@@ -47,6 +47,8 @@ class Type {
 
     /** java.lang.Character. */
     public final static Type BOXED_CHAR = typeFor(java.lang.Character.class);
+
+    public final static Type BOXED_DOUBLE = typeFor(java.lang.Double.class);
 
     /** java.lang.Boolean. */
     public final static Type BOXED_BOOLEAN = typeFor(java.lang.Boolean.class);

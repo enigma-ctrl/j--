@@ -37,7 +37,8 @@ public class JForStatement extends JStatement {
 	
 	
 	public JAST analyze(Context context) {
-		return this;
+
+        return this;
 	}
 
 	public void codegen(CLEmitter output) {

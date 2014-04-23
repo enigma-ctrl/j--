@@ -152,26 +152,45 @@ class JVariable extends JExpression implements JLhs {
                 if (type == Type.INT || type == Type.BOOLEAN
                         || type == Type.CHAR) {
                     switch (offset) {
-                    case 0:
-                        output.addNoArgInstruction(ILOAD_0);
-                        break;
-                    case 1:
-                        output.addNoArgInstruction(ILOAD_1);
-                        break;
-                    case 2:
-                        output.addNoArgInstruction(ILOAD_2);
-                        break;
-                    case 3:
-                        output.addNoArgInstruction(ILOAD_3);
-                        break;
-                    default:
-                        output.addOneArgInstruction(ILOAD, offset);
-                        break;
+                        case 0:
+                            output.addNoArgInstruction(ILOAD_0);
+                            break;
+                        case 1:
+                            output.addNoArgInstruction(ILOAD_1);
+                            break;
+                        case 2:
+                            output.addNoArgInstruction(ILOAD_2);
+                            break;
+                        case 3:
+                            output.addNoArgInstruction(ILOAD_3);
+                            break;
+                        default:
+                            output.addOneArgInstruction(ILOAD, offset);
+                            break;
+                    }
+                }else if (type == Type.DOUBLE) {
+                        switch (offset) {
+                            case 0:
+                                output.addNoArgInstruction(DLOAD_0);
+                                break;
+                            case 1:
+                                output.addNoArgInstruction(DLOAD_1);
+                                break;
+                            case 2:
+                                output.addNoArgInstruction(DLOAD_2);
+                                break;
+                            case 3:
+                                output.addNoArgInstruction(DLOAD_3);
+                                break;
+                            default:
+                                output.addOneArgInstruction(DLOAD, offset);
+                                break;
+                        }
                     }
                 }
             }
-        }
     }
+
 
     /**
      * The semantics of j-- require that we implement short-circuiting branching
@@ -258,48 +277,67 @@ class JVariable extends JExpression implements JLhs {
             int offset = ((LocalVariableDefn) iDefn).offset();
             if (type.isReference()) {
                 switch (offset) {
-                case 0:
-                    output.addNoArgInstruction(ASTORE_0);
-                    break;
-                case 1:
-                    output.addNoArgInstruction(ASTORE_1);
-                    break;
-                case 2:
-                    output.addNoArgInstruction(ASTORE_2);
-                    break;
-                case 3:
-                    output.addNoArgInstruction(ASTORE_3);
-                    break;
-                default:
-                    output.addOneArgInstruction(ASTORE, offset);
-                    break;
+                    case 0:
+                        output.addNoArgInstruction(ASTORE_0);
+                        break;
+                    case 1:
+                        output.addNoArgInstruction(ASTORE_1);
+                        break;
+                    case 2:
+                        output.addNoArgInstruction(ASTORE_2);
+                        break;
+                    case 3:
+                        output.addNoArgInstruction(ASTORE_3);
+                        break;
+                    default:
+                        output.addOneArgInstruction(ASTORE, offset);
+                        break;
                 }
             } else {
                 // Primitive types
                 if (type == Type.INT || type == Type.BOOLEAN
-                        || type == Type.CHAR || type == Type.DOUBLE) {
+                        || type == Type.CHAR) {
                     switch (offset) {
-                    case 0:
-                        output.addNoArgInstruction(ISTORE_0);
-                        break;
-                    case 1:
-                        output.addNoArgInstruction(ISTORE_1);
-                        break;
-                    case 2:
-                        output.addNoArgInstruction(ISTORE_2);
-                        break;
-                    case 3:
-                        output.addNoArgInstruction(ISTORE_3);
-                        break;
-                    default:
-                        output.addOneArgInstruction(ISTORE, offset);
-                        break;
+                        case 0:
+                            output.addNoArgInstruction(ISTORE_0);
+                            break;
+                        case 1:
+                            output.addNoArgInstruction(ISTORE_1);
+                            break;
+                        case 2:
+                            output.addNoArgInstruction(ISTORE_2);
+                            break;
+                        case 3:
+                            output.addNoArgInstruction(ISTORE_3);
+                            break;
+                        default:
+                            output.addOneArgInstruction(ISTORE, offset);
+                            break;
+                    }
+
+                }
+                if (type == Type.DOUBLE) {
+                    switch (offset) {
+                        case 0:
+                            output.addNoArgInstruction(DSTORE_0);
+                            break;
+                        case 1:
+                            output.addNoArgInstruction(DSTORE_1);
+                            break;
+                        case 2:
+                            output.addNoArgInstruction(DSTORE_2);
+                            break;
+                        case 3:
+                            output.addNoArgInstruction(DSTORE_3);
+                            break;
+                        default:
+                            output.addOneArgInstruction(DSTORE, offset);
+                            break;
                     }
                 }
             }
         }
     }
-
     /**
      * @inheritDoc
      */

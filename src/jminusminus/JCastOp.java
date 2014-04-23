@@ -128,20 +128,32 @@ class Conversions {
 
         put(Type.CHAR, Type.INT, Converter.Identity);
         put(Type.INT, Type.CHAR, new I2C());
+        put(Type.INT, Type.DOUBLE, new I2D());
+        put(Type.DOUBLE, Type.INT, new D2I());
+        put(Type.DOUBLE, Type.CHAR, new D2C());
+        put(Type.CHAR, Type.DOUBLE, new C2D());
+
+
 
         // Boxing
         put(Type.CHAR, Type.BOXED_CHAR, new Boxing(Type.CHAR, Type.BOXED_CHAR));
         put(Type.INT, Type.BOXED_INT, new Boxing(Type.INT, Type.BOXED_INT));
         put(Type.BOOLEAN, Type.BOXED_BOOLEAN, new Boxing(Type.BOOLEAN,
                 Type.BOXED_BOOLEAN));
+        put(Type.DOUBLE, Type.BOXED_DOUBLE, new Boxing(Type.DOUBLE, Type.BOXED_DOUBLE));
 
         // Un-boxing
         put(Type.BOXED_CHAR, Type.CHAR, new UnBoxing(Type.BOXED_CHAR,
                 Type.CHAR, "charValue"));
         put(Type.BOXED_INT, Type.INT, new UnBoxing(Type.BOXED_INT, Type.INT,
                 "intValue"));
+
+        put(Type.BOXED_DOUBLE, Type.DOUBLE, new UnBoxing(Type.BOXED_DOUBLE,
+                Type.DOUBLE, "doubleValue"));
+
         put(Type.BOXED_BOOLEAN, Type.BOOLEAN, new UnBoxing(Type.BOXED_BOOLEAN,
                 Type.BOOLEAN, "booleanValue"));
+
     }
 
     /**
@@ -344,6 +356,53 @@ class I2C implements Converter {
 
     public void codegen(CLEmitter output) {
         output.addNoArgInstruction(I2C);
+    }
+
+}
+class I2D implements Converter {
+
+    /**
+     * @inheritDoc
+     */
+
+    public void codegen(CLEmitter output) {
+        output.addNoArgInstruction(I2D);
+    }
+
+}
+class D2I implements Converter {
+
+    /**
+     * @inheritDoc
+     */
+
+    public void codegen(CLEmitter output) {
+        output.addNoArgInstruction(D2I);
+    }
+
+}
+
+class D2C implements Converter {
+
+    /**
+     * @inheritDoc
+     */
+
+    public void codegen(CLEmitter output) {
+        output.addNoArgInstruction(D2I);
+        output.addNoArgInstruction(I2C);
+    }
+
+}
+class C2D implements Converter {
+
+    /**
+     * @inheritDoc
+     */
+
+    public void codegen(CLEmitter output) {
+
+        output.addNoArgInstruction(I2D);
     }
 
 }

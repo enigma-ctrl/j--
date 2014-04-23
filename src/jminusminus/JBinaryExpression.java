@@ -110,8 +110,10 @@ class JPlusOp extends JBinaryExpression {
 			return (new JStringConcatenationOp(line, lhs, rhs))
 					.analyze(context);
 		} else if (lhs.type() == Type.INT && rhs.type() == Type.INT) {
-			type = Type.INT;
-		} else {
+            type = Type.INT;
+        }else if (lhs.type()==Type.DOUBLE && rhs.type() == Type.DOUBLE) {
+            type = Type.DOUBLE;
+        }else {
 			type = Type.ANY;
 			JAST.compilationUnit.reportSemanticError(line(),
 					"Invalid operand types for +");
@@ -131,11 +133,15 @@ class JPlusOp extends JBinaryExpression {
 	 */
 
 	public void codegen(CLEmitter output) {
-		if (type == Type.INT) {
 			lhs.codegen(output);
 			rhs.codegen(output);
-			output.addNoArgInstruction(IADD);
-		}
+			if (lhs.type()==Type.DOUBLE){
+
+             output.addNoArgInstruction(DADD);
+            }else {
+                output.addNoArgInstruction(IADD);
+            }
+
 	}
 
 }
@@ -173,13 +179,21 @@ class JSubtractOp extends JBinaryExpression {
 	 */
 
 	public JExpression analyze(Context context) {
-		lhs = (JExpression) lhs.analyze(context);
-		rhs = (JExpression) rhs.analyze(context);
-		lhs.type().mustMatchExpected(line(), Type.INT);
-		rhs.type().mustMatchExpected(line(), Type.INT);
-		type = Type.INT;
-		return this;
-	}
+        lhs = (JExpression) lhs.analyze(context);
+        rhs = (JExpression) rhs.analyze(context);
+        if (lhs.type() == Type.DOUBLE) {
+            lhs.type().mustMatchExpected(line(), Type.DOUBLE);
+            rhs.type().mustMatchExpected(line(), Type.DOUBLE);
+            type = Type.DOUBLE;
+
+        }else {
+            lhs.type().mustMatchExpected(line(), Type.INT);
+            rhs.type().mustMatchExpected(line(), Type.INT);
+            type = Type.INT;
+        }
+        return this;
+    }
+
 
 	/**
 	 * Generating code for the - operation involves generating code for the two
@@ -193,7 +207,12 @@ class JSubtractOp extends JBinaryExpression {
 	public void codegen(CLEmitter output) {
 		lhs.codegen(output);
 		rhs.codegen(output);
-		output.addNoArgInstruction(ISUB);
+		if (lhs.type == Type.DOUBLE) {
+            output.addNoArgInstruction(DSUB);
+        }else {
+            output.addNoArgInstruction(ISUB);
+        }
+
 	}
 
 }

@@ -5,7 +5,11 @@
 
 // Copyright 2013 Bill Campbell, Swami Iyer and Bahar Akbal-Delibas
 
+
+
 package jminusminus;
+
+import static jminusminus.CLConstants.*;
 
 /**
  * The AST node for an double literal.
@@ -54,7 +58,11 @@ class JLiteralDouble extends JExpression {
      */
 
     public void codegen(CLEmitter output) {
+        double x = Double.parseDouble(text);
 
+        if (x == 0) {output.addNoArgInstruction(DCONST_0);}
+        else if (x == 1){output.addNoArgInstruction(DCONST_1); }
+        else {output.addLDCInstruction(x);}
     }
 
     /**
