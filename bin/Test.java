@@ -28,6 +28,15 @@ public static class Test{
         q = q + 2.5;
         System.out.println((int)q);
 
+        x++;
+        System.out.println(x); //post increment
+        --x;
+        System.out.println(x); //predecrement
+        int i;
+        for (i=0; 5 > i; ++i){
+            System.out.println(x+i);
+        }
+
     }
 
 }

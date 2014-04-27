@@ -287,12 +287,8 @@ class JPostDecrementOp extends JUnaryExpression {
         if (arg instanceof JVariable) {
             // A local variable; otherwise analyze() would
             // have replaced it with an explicit field selection.
-            int offset = ((LocalVariableDefn) ((JVariable) arg).iDefn())
-                    .offset();
-            if (!isStatementExpression) {
-                // Loading its original rvalue
-                arg.codegen(output);
-            }
+            int offset = ((LocalVariableDefn) ((JVariable) arg).iDefn()).offset();
+
             output.addIINCInstruction(offset, -1);
         } else {
             ((JLhs) arg).codegenLoadLhsLvalue(output);
@@ -371,9 +367,8 @@ class JPostIncrementOp extends JUnaryExpression {
         if (arg instanceof JVariable) {
                 // A local variable; otherwise analyze() would
                 // have replaced it with an explicit field selection.
-                int offset = ((LocalVariableDefn) ((JVariable) arg).iDefn())
-                        .offset();
-                output.addIINCInstruction(offset, -1);
+                int offset = ((LocalVariableDefn) ((JVariable) arg).iDefn()).offset();
+                output.addIINCInstruction(offset, 1);
         } else {
             ((JLhs) arg).codegenLoadLhsLvalue(output);
             ((JLhs) arg).codegenLoadLhsRvalue(output);
@@ -452,10 +447,10 @@ class JPreIncrementOp extends JUnaryExpression {
             int offset = ((LocalVariableDefn) ((JVariable) arg).iDefn())
                     .offset();
             output.addIINCInstruction(offset, 1);
-            if (!isStatementExpression) {
-                // Loading its original rvalue
-                arg.codegen(output);
-            }
+//            if (!isStatementExpression) {
+//                // Loading its original rvalue
+//                arg.codegen(output);
+//            }
         } else {
             ((JLhs) arg).codegenLoadLhsLvalue(output);
             ((JLhs) arg).codegenLoadLhsRvalue(output);

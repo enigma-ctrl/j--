@@ -1,12 +1,15 @@
 package jminusminus;
 
+
+import static jminusminus.CLConstants.*;
+
 public class JForStatement extends JStatement {
 
 	/** Initialize a variable. */
 	private JStatement initialize;
 	
 	/** Statement that terminates the loop */
-	private JStatement terminate;
+	private JExpression terminate;
 
 	/** Statement that updates the variable for next loop */
 	private JExpression update;
@@ -17,7 +20,7 @@ public class JForStatement extends JStatement {
 //	/** Statement that checks for initial that is a statement */
 //	private JStatement initialize2;
 	
-	public JForStatement(int line, JStatement initialize, JStatement terminate,
+	public JForStatement(int line, JStatement initialize, JExpression terminate,
 			JExpression update, JStatement consequent) {
 		super(line);
 		this.initialize = initialize;
@@ -37,12 +40,37 @@ public class JForStatement extends JStatement {
 	
 	
 	public JAST analyze(Context context) {
+        initialize.analyze(context);
+        terminate.analyze(context);
+        terminate.type().mustMatchExpected(line(), Type.BOOLEAN);
+        if (update != null) {
+            update.analyze(context);
+        }
+
+        consequent.analyze(context);
 
         return this;
 	}
 
 	public void codegen(CLEmitter output) {
+        initialize.codegen(output);
 
+        String test = output.createLabel();
+        String out = output.createLabel();
+
+        // Branch out of the loop on the test condition
+        // being false
+        output.addLabel(test);
+        terminate.codegen(output, out, false);
+
+        // Codegen body
+        consequent.codegen(output);
+        update.codegen(output);
+        // Unconditional jump back up to test
+        output.addBranchInstruction(GOTO, test);
+
+        // The label below and outside the loop
+        output.addLabel(out);
 	}
 
 	public void writeToStdOut(PrettyPrinter p) {

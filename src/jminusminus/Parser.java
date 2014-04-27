@@ -2,6 +2,7 @@
 
 package jminusminus;
 
+import java.beans.Expression;
 import java.util.ArrayList;
 import static jminusminus.TokenKind.*;
 
@@ -799,7 +800,8 @@ public class Parser {
 							consequent);
 				} else {
 					JStatement initialize = statement();
-					JStatement term = statement();
+					JExpression term = expression();
+                    mustBe(SEMI);
 					JExpression update = expression();
 					mustBe(RPAREN);
 					JStatement consequent = statement();
@@ -808,7 +810,8 @@ public class Parser {
 				}
 			} else {
 				JStatement initialize = statement();
-				JStatement term = statement();
+				JExpression term = expression();
+                mustBe(SEMI);
 				JExpression update = expression();
 				mustBe(RPAREN);
 				JStatement consequent = statement();
