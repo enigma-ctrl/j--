@@ -19,7 +19,10 @@ public class JEnhancedForStatement extends JStatement {
 	}
 
 	public JAST analyze(Context context) {
-		return this;
+        initialize.analyze(context);
+        array.analyze(context);
+        consequent.analyze(context);
+        return this;
 	}
 
 	public void codegen(CLEmitter output) {
